@@ -1,0 +1,24 @@
+{
+  "name": "zinio/php-test",
+  "description": "Test for ZINIO enterprise",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Roger Guasch",
+      "email": "roger.guasch.rion@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1.3"
+  },
+  "config": {
+    "platform": {
+      "php": "7.1.3"
+    },
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true
+  }
+}
