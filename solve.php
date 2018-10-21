@@ -1,79 +1,33 @@
 <?php
-
 declare(strict_types=1);
 
-CONST EARTH_RADIUS = 6371;
-CONST RAD          = M_PI * 180;
+require_once 'City.php';
+require_once 'PathManager.php';
+require_once 'Population.php';
+require_once 'Path.php';
+require_once 'GA.php';
 
-echo 'Searching the best trip option...' . PHP_EOL;
+loadCitiesFromFile();
 
-$cities              = readFromFile();
-$citiesWithDistances = calculateDistances($cities);
-print_r($citiesWithDistances);
-echo 'Thanks to use ZINIO' . PHP_EOL;
+$pop = new Population(100, true);
+$pop = GA::evolvePopulation($pop);
+for ($i = 0; $i < 500; $i++) {
+    $pop = GA::evolvePopulation($pop);
+}
+print_r($pop->getFittest() . PHP_EOL);
 
-
-function readFromFile(): array
+function loadCitiesFromFile(): void
 {
-    $tab    = "\t";
-    $fp     = fopen('citiesSMALL.txt', 'r');
-    $cities = [];
+    $tab = "\t";
+    $fp  = fopen('cities.txt', 'r');
 
     while (!feof($fp)) {
         $line = fgets($fp, 2048);
 
-        $data_txt = str_getcsv($line, $tab);
-
-        $cities[$data_txt[0]] = [
-            'latitude'  => $data_txt[1],
-            'longitude' => $data_txt[2]
-        ];
-
+        $dataFromFile = str_getcsv($line, $tab);
+        $city         = new City($dataFromFile[0], $dataFromFile[1], $dataFromFile[2]);
+        PathManager::addCity($city);
     }
 
     fclose($fp);
-
-    return $cities;
-}
-
-function calculateDistances(array $cities): array
-{
-    $tmpCities = $cities;
-    $distances = [];
-    foreach ($cities as $cityName => $city) {
-        foreach ($tmpCities as $tmpCityName => $tmpCity) {
-
-            echo $cityName . ' ' . $tmpCityName . PHP_EOL;
-
-            if ($cityName !== $tmpCityName) {
-                $distance = circleDistance(
-                    $city['latitude'],
-                    $city['longitude'],
-                    $tmpCity['latitude'],
-                    $tmpCity['longitude']
-                );
-
-                $distances[$cityName][$tmpCityName] = $distance;
-
-            }
-
-        }
-
-    }
-
-
-    return $distances;
-}
-
-function circleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)
-{
-
-    $rad = M_PI / 180;
-    //Calculate distance from latitude and longitude
-    $theta = $longitudeFrom - $longitudeTo;
-    $dist  = sin($longitudeFrom * $rad)
-        * sin($latitudeTo * $rad) + cos($latitudeFrom * $rad)
-        * cos($latitudeTo * $rad) * cos($theta * $rad);
-
-    return round(acos($dist) / $rad * 60 * 1.853, 0);
 }
