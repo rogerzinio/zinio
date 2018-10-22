@@ -1,0 +1,5 @@
+version: '2'
+services:
+    zinio:
+        volumes:
+        - '/home/roger/projects/test/zinio:/var/www:cached'

@@ -1,0 +1,5 @@
+version: '2'
+services:
+    zinio:
+        volumes:
+            - '%YOUR_PROJECT_PATH%:/var/www:cached'

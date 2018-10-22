@@ -1,0 +1,8 @@
+version: '2'
+services:
+  zinio:
+    container_name: zinio
+    build: docker/services/zinio
+    extends:
+      service: zinio
+      file: docker/volume_mappings.yml
