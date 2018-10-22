@@ -21,7 +21,7 @@ final class Population
 
     public function populationSize(): int
     {
-        return count($this->paths);
+        return \count($this->paths);
     }
 
     public function savePath($index, Path $path): void

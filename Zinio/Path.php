@@ -13,7 +13,7 @@ final class Path
         $this->path = array_fill(0, PathManager::numberOfCities(), null);
     }
 
-    public function generateIndividual()
+    public function generateIndividual(): void
     {
         for ($cityIndex = 0, $len = PathManager::numberOfCities(); $cityIndex < $len; $cityIndex++) {
             $this->setCity($cityIndex, PathManager::getCity($cityIndex));
